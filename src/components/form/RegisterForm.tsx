@@ -1,10 +1,34 @@
-"use client";
-import React, {  } from "react";
+import { apiUrl } from "@/lib/apiUrl";
+import axios from "axios";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const RegisterForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FieldValues>();
+
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    axios
+      .post(`/api/register`, data)
+      .then(() => {
+        toast.success("Successfuly Registered!");
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Something went wrong");
+      });
+  };
 
   return (
-    <form className="w-full pt-7">
+    <form
+      className="w-full pt-7 font-raleway"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="grid gap-x-10 gap-y-4 md:grid-cols-2">
         {/* Name */}
         <div>
@@ -14,7 +38,15 @@ const RegisterForm = () => {
           >
             Name*
           </label>
-          <input type="text" id="name" className="input-field" />
+          <input
+            type="text"
+            className="input-field"
+            {...register("name")}
+            required
+          />
+          {errors.name?.type === "required" && (
+            <span className="text-red-500 text-sm">This field is required</span>
+          )}
         </div>
 
         {/* Email */}
@@ -25,7 +57,35 @@ const RegisterForm = () => {
           >
             Email*
           </label>
-          <input type="email" id="email" className="input-field" />
+          <input
+            type="email"
+            id="email"
+            className="input-field"
+            {...register("email")}
+          />
+          {errors.email && (
+            <span className="text-red-500 text-sm">This field is required</span>
+          )}
+        </div>
+
+        {/* Password */}
+
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-900"
+          >
+            Password*
+          </label>
+          <input
+            {...register("password")}
+            type="password"
+            id="password"
+            className="input-field"
+          />
+          {errors.password && (
+            <span className="text-red-500 text-sm">This field is required</span>
+          )}
         </div>
 
         {/* Address */}
@@ -36,7 +96,15 @@ const RegisterForm = () => {
           >
             Address*
           </label>
-          <input type="text" id="address" className="input-field" />
+          <input
+            {...register("address")}
+            type="text"
+            id="address"
+            className="input-field"
+          />
+          {errors.address && (
+            <span className="text-red-500 text-sm">This field is required</span>
+          )}
         </div>
 
         {/* Wallet Address */}
@@ -47,7 +115,15 @@ const RegisterForm = () => {
           >
             Wallet Address
           </label>
-          <input type="text" id="wallet-address" className="input-field" />
+          <input
+            {...register("walletAddress")}
+            type="text"
+            id="wallet-address"
+            className="input-field"
+          />
+          {errors.walletAddress && (
+            <span className="text-red-500 text-sm">This field is required</span>
+          )}
         </div>
 
         {/* Age */}
@@ -58,7 +134,15 @@ const RegisterForm = () => {
           >
             Age
           </label>
-          <input type="number" id="age" className="input-field" />
+          <input
+            {...register("age", { min: 18, max: 99 })}
+            type="number"
+            id="age"
+            className="input-field"
+          />
+          {errors.age && (
+            <span className="text-red-500 text-sm">This field is required</span>
+          )}
         </div>
 
         {/* Date of Birth */}
@@ -70,7 +154,17 @@ const RegisterForm = () => {
             Date of Birth
           </label>
           <div className="mt-1 relative">
-            <input type="date" id="dob" className="block w-full input-field" />
+            <input
+              {...register("dateOfBirth")}
+              type="date"
+              id="dob"
+              className="block w-full input-field"
+            />
+            {errors.dateOfBirth && (
+              <span className="text-red-500 text-sm">
+                This field is required
+              </span>
+            )}
           </div>
         </div>
 
@@ -82,34 +176,39 @@ const RegisterForm = () => {
           >
             Mobile Number*
           </label>
-          <input type="tel" id="mobile" className="input-field" />
-        </div>
-
-        {/* Checkbox */}
-        <div className="flex items-start mt-4">
           <input
-
-            type="checkbox"
-            className="h-4 w-4 cursor-pointer items-start text-indigo-600 border-gray-300 rounded"
+            {...register("phoneNumber")}
+            type="tel"
+            id="mobile"
+            className="input-field"
           />
-          <label
-            htmlFor="terms-and-conditions"
-            className="ml-3 block text-sm font-medium text-gray-900"
-          >
-            I agree to the{" "}
-            <span className="text-indigo-600 hover:text-indigo-500">
-              Terms and Conditions
-            </span> &
-
-           herefy declare that the information provided above is true to the
-            best of my knowledge and belief.
-
-          </label>
+          {errors.phoneNumber && (
+            <span className="text-red-500 text-sm">This field is required</span>
+          )}
         </div>
       </div>
 
-      <div className="mt-10 md:flex-row text-center justify-center items-center space-x-5">
-        <button type="submit" className="w-40 submit-btn">
+      <div className="flex items-start mt-4">
+        <input
+          type="checkbox"
+          className="h-4 w-4 cursor-pointer items-start text-indigo-600 border-gray-300 rounded"
+          required
+        />
+        <label
+          htmlFor="terms-and-conditions"
+          className="ml-3 block text-sm font-medium text-gray-900"
+        >
+          I agree to the{" "}
+          <span className="text-indigo-600 hover:text-indigo-500">
+            Terms and Conditions
+          </span>{" "}
+          & herefy declare that the information provided above is true to the
+          best of my knowledge and belief.
+        </label>
+      </div>
+
+      <div className="mt-10 md:flex-row justify-center items-center space-x-5">
+        <button type="submit" className="w-56 submit-btn">
           Register
         </button>
       </div>

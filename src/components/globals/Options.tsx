@@ -2,22 +2,31 @@
 import { UserCircleIcon, UserIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import React, { useState } from "react";
-import { RiProfileFill, RiProfileLine } from "react-icons/ri";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Options = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
+  const user = session?.user?.name;
+
+  if (session) console.log(session);
+
   const links = [
     {
       name: "About",
-      link: "/dashboard",
+      link: "/portal",
+    },
+    {
+      name: "Regiser",
+      link: "/register-user",
     },
     {
       name: "Register Complaint",
-      link: "/dashboard/complaint",
+      link: "/complaint",
     },
     {
       name: "View Status",
-      link: "/dashboard/view",
+      link: "/view",
     },
     {
       name: "Contact Higher Authorities",
@@ -53,8 +62,9 @@ const Options = () => {
         } block justify-between flex-grow lg:flex lg:items-center lg:w-auto`}
       >
         <div className="text-sm">
-          {links.map((link) => (
+          {links.map((link, i) => (
             <Link
+              key={i}
               href={link.link}
               className="block mt-4 lg:inline-block  lg:mt-0 text-white  mr-4"
             >
@@ -66,7 +76,7 @@ const Options = () => {
         <div>
           <div className="flex text-sm items-center gap-3 py-2 cursor-pointer rounded text-white  mt-4 lg:mt-0">
             <UserCircleIcon className="h-10" />
-            <div>John Doe</div>
+            {session ? <div>{user}</div> : <Link href="/login">Login</Link>}
           </div>
         </div>
       </div>

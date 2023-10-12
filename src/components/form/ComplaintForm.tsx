@@ -7,9 +7,8 @@ import React from "react";
 
 const ComplaintForm = () => {
   return (
-  
-    <form className="w-full pt-7">
-      <div className="grid gap-6 md:grid-cols-2">
+    <form className="w-full pt-7 mb-5">
+      <div className="grid gap-6 md:grid-cols-2 ">
         <div>
           <label
             htmlFor="name"
@@ -123,9 +122,7 @@ const ComplaintForm = () => {
           ></textarea>
         </div>
 
-
         <div className="md:col-span-2">
-
           <label className="block text-sm font-medium text-gray-900">
             Submit your application PDF
           </label>
@@ -146,13 +143,11 @@ const ComplaintForm = () => {
               />
             </label>
             <p className="text-xs leading-5 text-gray-600">PDF up to 10MB</p>
-            </div>
-      
           </div>
         </div>
+      </div>
 
-
-        <div className="mt-5 md:flex-row items-center space-x-5">
+      <div className="mt-5 flex-row items-center space-x-5">
         <button type="submit" className="submit-btn">
           Submit
         </button>
@@ -163,10 +158,6 @@ const ComplaintForm = () => {
           Cancel
         </button>
       </div>
-        
-
-
-    
     </form>
   );
 };

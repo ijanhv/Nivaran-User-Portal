@@ -3,8 +3,6 @@ import User from "@/models/user.model";
 import bcrypt from "bcrypt";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -20,18 +18,20 @@ export const authOptions: AuthOptions = {
         }
 
         connectToDB();
-        
+
         const user = await User.findOne({
           where: { email: credentials.email },
         });
 
-        if (!user || !user.hashedPassword) {
+        // console.log(user);
+
+        if (!user || !user.password) {
           throw new Error("Invalid credentials");
         }
 
         const isCorrect = await bcrypt.compare(
           credentials.password,
-          user.hashedPassword
+          user.password
         );
 
         if (!isCorrect) {
@@ -49,7 +49,39 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
+  jwt: {
+    secret: process.env.NEXTAUTH_JWT_SECRET,
+  },
   secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
+    async session({ session, user, token }) {
+      console.log("SESSION CALLBACK", token);
+      return {
+        ...session,
+        user: {
+          id: token.id,
+          email: token.email,
+          name: token.name,
+          age: token.age,
+          dateOfBirth: token.dateOfBirth,
+          phoneNumber: token.phoneNumber,
+          walletAddress: token.walletAddress,
+        },
+        token 
+      };
+    },
+    async jwt({ token, user, session }) {
+      // console.log("JWT CALLBACK", token, user, session);
+      if (user) {
+        return {
+          ...token,
+          user
+        };
+      }
+      return token;
+    },
+  },
 };
 
 export default NextAuth(authOptions);

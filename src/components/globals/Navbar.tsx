@@ -19,7 +19,7 @@ const Navbar = () => {
             <div className="flex gap-4 items-center">
               <div className="rounded-full  px-3 py-2 text-sm leading-6 text-indigo-200 ring-1  hover:shadow-md">
                 <Link
-                  href="/dashboard"
+                  href="/portal"
                   className="text-sm text-indigo-200 flex gap-2  items-center font-semibold"
                 >
                   Get Started <BsArrowUpRight className=" " />

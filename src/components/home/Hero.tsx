@@ -4,7 +4,7 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="relative isolate px-6 lg:px-8 h-screen">
+    <div className="relative isolate px-6 lg:px-8 h-screen font-nunito">
       <div
         className="absolute inset-x-0 -z-10 transform-gpu overflow-hidden blur-3xl justify-center "
         aria-hidden="true"
@@ -22,9 +22,9 @@ const Hero = () => {
         </div>
         
         <div className="text-center ">
-          <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
+          <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl font-nunito">
           Revolutionize FIR Reporting with Blockchain Technology 🚀 </h1>
-          <p className="mt-6 text-xl leading-8 text-gray-600">
+          <p className="mt-6 text-xl leading-8 text-gray-600 font-nunito">
             Our innovative platform leverages the power of blockchain technology
             to transform the way FIRs are created, managed, and accessed,
             bringing about a new era of efficiency and reliability in reporting
